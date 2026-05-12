@@ -18,6 +18,12 @@ public interface AnalysisContext {
     /** All Java sources discovered under {@link #projectRoot()}, in stable order. */
     List<JavaSource> javaSources();
 
+    /**
+     * All Spring-style configuration files discovered under {@link #projectRoot()}: {@code
+     * application*.{yml,yaml,properties}} and {@code bootstrap*.{yml,yaml,properties}}.
+     */
+    List<ConfigSource> configSources();
+
     /** A discovered Java source file, paired with its parsed compilation unit handle. */
     interface JavaSource {
 

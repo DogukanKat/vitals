@@ -66,6 +66,19 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("N+1");
     }
 
+    @Test
+    void run_givenOpenInViewEnabled_reportsJpa003(@TempDir Path tempDir) {
+        Path project = copyFixture("jpa-003", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .execute(project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8);
+
+        assertThat(exit).isZero();
+        assertThat(output).contains("WARN").contains("JPA-003").contains("open-in-view");
+    }
+
     private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
             URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);

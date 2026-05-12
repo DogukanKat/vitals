@@ -7,6 +7,7 @@ import dev.vitals.core.ScoreCalculator;
 import dev.vitals.core.StaticRule;
 import dev.vitals.rules.jpa.Jpa001EagerFetchRule;
 import dev.vitals.rules.jpa.Jpa002NPlusOneRule;
+import dev.vitals.rules.jpa.Jpa003OpenInViewRule;
 import dev.vitals.staticengine.JavaParserAnalysisContext;
 import java.io.PrintStream;
 import java.nio.file.Path;
@@ -61,7 +62,8 @@ public final class VitalsCli implements Callable<Integer> {
         }
         long started = System.nanoTime();
         AnalysisContext context = JavaParserAnalysisContext.discover(root);
-        List<StaticRule> rules = List.of(new Jpa001EagerFetchRule(), new Jpa002NPlusOneRule());
+        List<StaticRule> rules =
+                List.of(new Jpa001EagerFetchRule(), new Jpa002NPlusOneRule(), new Jpa003OpenInViewRule());
 
         List<Diagnostic> diagnostics = new ArrayList<>();
         for (StaticRule rule : rules) {

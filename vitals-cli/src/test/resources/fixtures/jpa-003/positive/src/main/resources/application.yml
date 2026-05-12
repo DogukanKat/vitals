@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: orders-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orders
+    username: orders
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8080
