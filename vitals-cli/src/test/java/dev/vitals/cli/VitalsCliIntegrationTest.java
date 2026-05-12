@@ -22,7 +22,7 @@ class VitalsCliIntegrationTest {
 
     @Test
     void run_givenProjectWithEagerFetch_reportsError(@TempDir Path tempDir) {
-        Path project = copyFixture("positive", tempDir);
+        Path project = copyFixture("jpa-001", "positive", tempDir);
         ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
         int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
@@ -39,7 +39,7 @@ class VitalsCliIntegrationTest {
 
     @Test
     void run_givenCleanProject_reportsPerfectScore(@TempDir Path tempDir) {
-        Path project = copyFixture("negative", tempDir);
+        Path project = copyFixture("jpa-001", "negative", tempDir);
         ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
         int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
@@ -51,10 +51,25 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("Great");
     }
 
-    private static Path copyFixture(String name, Path tempDir) {
+    @Test
+    void run_givenProjectWithNPlusOneLoop_reportsJpa002(@TempDir Path tempDir) {
+        Path project = copyFixture("jpa-002", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .execute(project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8);
+
+        assertThat(exit).isEqualTo(1);
+        assertThat(output).contains("JPA-002");
+        assertThat(output).contains("getCustomer()");
+        assertThat(output).contains("N+1");
+    }
+
+    private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
-            URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/jpa-001/" + name);
-            Objects.requireNonNull(root, "fixture not found: " + name);
+            URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);
+            Objects.requireNonNull(root, "fixture not found: " + rule + "/" + name);
             Path src = Path.of(root.toURI());
             try (Stream<Path> walk = Files.walk(src)) {
                 walk.forEach(p -> {
