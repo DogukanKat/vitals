@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+    <!-- Fixture .java files under test resources are intentionally non-compliant samples. -->
+    <suppress checks=".*" files=".*[\\/]src[\\/]test[\\/]resources[\\/].*"/>
+    <!-- Test method naming uses snake_case_with_underscores by convention. -->
+    <suppress checks="MethodName" files=".*Test\.java"/>
+</suppressions>

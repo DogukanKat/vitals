@@ -1,0 +1,21 @@
+.gradle/
+build/
+**/build/
+out/
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.DS_Store
+
+# local scratch
+playground/
+
+# secrets / env
+.env
+.env.*
+secrets/
+
+# OWASP cache
+.gradle/dependency-check-data/

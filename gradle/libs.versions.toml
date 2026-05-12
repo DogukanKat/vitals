@@ -1,0 +1,39 @@
+[versions]
+javaparser = "3.26.4"
+bytebuddy = "1.15.11"
+jspecify = "1.0.0"
+slf4j = "2.0.16"
+logback = "1.5.12"
+picocli = "4.7.6"
+junit = "5.11.4"
+assertj = "3.26.3"
+
+# plugins
+spotless = "7.0.2"
+errorprone-plugin = "4.1.0"
+errorprone-core = "2.36.0"
+nullaway = "0.12.3"
+dependencycheck = "11.1.1"
+
+[libraries]
+javaparser-symbol-solver = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaparser" }
+bytebuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "bytebuddy" }
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+picocli = { module = "info.picocli:picocli", version.ref = "picocli" }
+
+# test
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+
+# annotation processors
+errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorprone-core" }
+nullaway-core = { module = "com.uber.nullaway:nullaway", version.ref = "nullaway" }
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+errorprone = { id = "net.ltgt.errorprone", version.ref = "errorprone-plugin" }
+dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "dependencycheck" }
