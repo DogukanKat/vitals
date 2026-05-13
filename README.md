@@ -21,7 +21,7 @@ Pre-MVP. Tier 1 rules being implemented in order — see the table below.
 | JPA-001   | `vitals-rules-jpa`    | shipped   | `FetchType.EAGER` on `@ManyToOne`/`@OneToOne`/`@ManyToMany`        |
 | JPA-002   | `vitals-rules-jpa`    | shipped   | N+1 query — association getter inside a loop                       |
 | JPA-003   | `vitals-rules-jpa`    | shipped   | `spring.jpa.open-in-view=true`                                     |
-| TX-001    | `vitals-rules-spring` | planned   | Blocking I/O inside `@Transactional`                               |
+| TX-001    | `vitals-rules-spring` | shipped   | Blocking I/O inside `@Transactional`                               |
 | TX-002    | `vitals-rules-spring` | planned   | `@Transactional` on private/protected method                       |
 | DI-001    | `vitals-rules-spring` | planned   | Field injection (`@Autowired` on field)                            |
 | SEC-001   | `vitals-rules-spring` | planned   | Actuator endpoints exposed without authentication                  |

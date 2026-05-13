@@ -79,6 +79,21 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("WARN").contains("JPA-003").contains("open-in-view");
     }
 
+    @Test
+    void run_givenBlockingCallInTransactional_reportsTx001(@TempDir Path tempDir) {
+        Path project = copyFixture("tx-001", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .execute(project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8);
+
+        assertThat(exit).isEqualTo(1);
+        assertThat(output).contains("TX-001");
+        assertThat(output).contains("Thread.sleep");
+        assertThat(output).contains("restTemplate.getForObject");
+    }
+
     private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
             URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);
