@@ -19,3 +19,7 @@ secrets/
 
 # OWASP cache
 .gradle/dependency-check-data/
+
+# Local AI agent brief — kept locally, not published.
+CLAUDE.md
+AGENTS.md
