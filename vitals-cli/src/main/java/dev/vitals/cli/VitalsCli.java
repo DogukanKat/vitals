@@ -9,6 +9,7 @@ import dev.vitals.rules.jpa.Jpa001EagerFetchRule;
 import dev.vitals.rules.jpa.Jpa002NPlusOneRule;
 import dev.vitals.rules.jpa.Jpa003OpenInViewRule;
 import dev.vitals.rules.spring.Tx001BlockingInTransactionRule;
+import dev.vitals.rules.spring.Tx002NonPublicTransactionalRule;
 import dev.vitals.staticengine.JavaParserAnalysisContext;
 import java.io.PrintStream;
 import java.nio.file.Path;
@@ -67,7 +68,8 @@ public final class VitalsCli implements Callable<Integer> {
                 new Jpa001EagerFetchRule(),
                 new Jpa002NPlusOneRule(),
                 new Jpa003OpenInViewRule(),
-                new Tx001BlockingInTransactionRule());
+                new Tx001BlockingInTransactionRule(),
+                new Tx002NonPublicTransactionalRule());
 
         List<Diagnostic> diagnostics = new ArrayList<>();
         for (StaticRule rule : rules) {

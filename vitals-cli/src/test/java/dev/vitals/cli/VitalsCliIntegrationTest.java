@@ -94,6 +94,20 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("restTemplate.getForObject");
     }
 
+    @Test
+    void run_givenTransactionalOnPrivateMethod_reportsTx002(@TempDir Path tempDir) {
+        Path project = copyFixture("tx-002", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .execute(project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8);
+
+        assertThat(exit).isEqualTo(1);
+        assertThat(output).contains("TX-002");
+        assertThat(output).contains("private method 'persist'");
+    }
+
     private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
             URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);
