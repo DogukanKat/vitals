@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: orders-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - heapdump
+          - env
+
+server:
+  port: 8080

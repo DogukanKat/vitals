@@ -24,7 +24,7 @@ Pre-MVP. Tier 1 rules being implemented in order — see the table below.
 | TX-001    | `vitals-rules-spring` | shipped   | Blocking I/O inside `@Transactional`                               |
 | TX-002    | `vitals-rules-spring` | shipped   | `@Transactional` on private/protected method                       |
 | DI-001    | `vitals-rules-spring` | shipped   | Field injection (`@Autowired` on field)                            |
-| SEC-001   | `vitals-rules-spring` | planned   | Actuator endpoints exposed without authentication                  |
+| SEC-001   | `vitals-rules-spring` | shipped   | Actuator endpoints exposed without authentication                  |
 | CFG-001   | `vitals-rules-spring` | planned   | Hardcoded secrets without `${...}` placeholder                     |
 | JVM-001   | `vitals-rules-jvm`    | planned   | Container heap not configured                                      |
 | KAFKA-001 | `vitals-rules-kafka`  | planned   | `enable.auto.commit=true` with manual processing                   |

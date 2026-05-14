@@ -121,6 +121,19 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("WARN").contains("DI-001").contains("@Autowired on field");
     }
 
+    @Test
+    void run_givenActuatorWildcardExposure_reportsSec001(@TempDir Path tempDir) {
+        Path project = copyFixture("sec-001", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .execute(project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8);
+
+        assertThat(exit).isEqualTo(1);
+        assertThat(output).contains("SEC-001").contains("wildcard '*'");
+    }
+
     private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
             URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);
