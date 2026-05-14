@@ -108,6 +108,19 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("private method 'persist'");
     }
 
+    @Test
+    void run_givenAutowiredOnFields_reportsDi001(@TempDir Path tempDir) {
+        Path project = copyFixture("di-001", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .execute(project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8);
+
+        assertThat(exit).isZero();
+        assertThat(output).contains("WARN").contains("DI-001").contains("@Autowired on field");
+    }
+
     private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
             URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);
