@@ -6,6 +6,7 @@ import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.ast.CompilationUnit;
 import dev.vitals.core.AnalysisContext;
 import dev.vitals.core.ConfigSource;
+import dev.vitals.core.Dockerfile;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -31,15 +32,20 @@ public final class JavaParserAnalysisContext implements AnalysisContext {
 
     private static final Pattern CONFIG_FILE =
             Pattern.compile("(application|bootstrap)(-[^/]+)?\\.(yml|yaml|properties)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern DOCKERFILE =
+            Pattern.compile("dockerfile(\\..+)?|.+\\.dockerfile", Pattern.CASE_INSENSITIVE);
 
     private final Path projectRoot;
     private final List<JavaSource> sources;
     private final List<ConfigSource> configs;
+    private final List<Dockerfile> dockerfiles;
 
-    private JavaParserAnalysisContext(Path projectRoot, List<JavaSource> sources, List<ConfigSource> configs) {
+    private JavaParserAnalysisContext(
+            Path projectRoot, List<JavaSource> sources, List<ConfigSource> configs, List<Dockerfile> dockerfiles) {
         this.projectRoot = projectRoot;
         this.sources = List.copyOf(sources);
         this.configs = List.copyOf(configs);
+        this.dockerfiles = List.copyOf(dockerfiles);
     }
 
     /**
@@ -56,6 +62,7 @@ public final class JavaParserAnalysisContext implements AnalysisContext {
                 new JavaParser(new ParserConfiguration().setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_21));
         List<JavaSource> javaSources = new ArrayList<>();
         List<ConfigSource> configSources = new ArrayList<>();
+        List<Dockerfile> dockerfiles = new ArrayList<>();
 
         try (Stream<Path> walk = Files.walk(projectRoot)) {
             walk.filter(Files::isRegularFile)
@@ -67,17 +74,29 @@ public final class JavaParserAnalysisContext implements AnalysisContext {
                             parseJava(parser, path).ifPresent(javaSources::add);
                         } else if (CONFIG_FILE.matcher(name).matches()) {
                             configSources.add(loadConfig(path));
+                        } else if (DOCKERFILE.matcher(name).matches()) {
+                            loadDockerfile(path).ifPresent(dockerfiles::add);
                         }
                     });
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to walk project root " + projectRoot, e);
         }
         LOG.debug(
-                "Discovered {} Java sources and {} config files under {}",
+                "Discovered {} Java sources, {} config files, {} Dockerfiles under {}",
                 javaSources.size(),
                 configSources.size(),
+                dockerfiles.size(),
                 projectRoot);
-        return new JavaParserAnalysisContext(projectRoot, javaSources, configSources);
+        return new JavaParserAnalysisContext(projectRoot, javaSources, configSources, dockerfiles);
+    }
+
+    private static Optional<Dockerfile> loadDockerfile(Path path) {
+        try {
+            return Optional.of(new Dockerfile(path, Files.readAllLines(path)));
+        } catch (IOException e) {
+            LOG.warn("Failed to read Dockerfile {}: {}", path, e.getMessage());
+            return Optional.empty();
+        }
     }
 
     private static Optional<JavaSource> parseJava(JavaParser parser, Path path) {
@@ -112,6 +131,11 @@ public final class JavaParserAnalysisContext implements AnalysisContext {
     @Override
     public List<ConfigSource> configSources() {
         return configs;
+    }
+
+    @Override
+    public List<Dockerfile> dockerfiles() {
+        return dockerfiles;
     }
 
     private record ParsedSource(Path path, CompilationUnit unit) implements JavaSource {

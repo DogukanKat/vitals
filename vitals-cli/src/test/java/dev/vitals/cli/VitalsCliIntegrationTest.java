@@ -147,6 +147,19 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("CFG-001").contains("spring.datasource.password");
     }
 
+    @Test
+    void run_givenJavaImageWithoutHeapBound_reportsJvm001(@TempDir Path tempDir) {
+        Path project = copyFixture("jvm-001", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .execute(project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8);
+
+        assertThat(exit).isZero();
+        assertThat(output).contains("WARN").contains("JVM-001").contains("bound the heap");
+    }
+
     private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
             URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);

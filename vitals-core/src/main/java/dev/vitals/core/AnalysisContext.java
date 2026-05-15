@@ -24,6 +24,12 @@ public interface AnalysisContext {
      */
     List<ConfigSource> configSources();
 
+    /**
+     * All Dockerfiles discovered under {@link #projectRoot()}: files named {@code Dockerfile},
+     * {@code Dockerfile.*}, or {@code *.Dockerfile} (case-insensitive).
+     */
+    List<Dockerfile> dockerfiles();
+
     /** A discovered Java source file, paired with its parsed compilation unit handle. */
     interface JavaSource {
 
