@@ -49,6 +49,12 @@ class Jvm001ContainerHeapRuleTest {
         assertThat(rule.analyze(JavaParserAnalysisContext.discover(project))).isEmpty();
     }
 
+    @Test
+    void analyze_givenDevcontainerDockerfile_reportsNothing(@TempDir Path tempDir) {
+        Path project = copyFixture("devcontainer", tempDir);
+        assertThat(rule.analyze(JavaParserAnalysisContext.discover(project))).isEmpty();
+    }
+
     private static Path copyFixture(String name, Path tempDir) {
         try {
             URL root = Jvm001ContainerHeapRuleTest.class.getResource("/fixtures/jvm-001/" + name);

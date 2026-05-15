@@ -82,6 +82,9 @@ public final class Jvm001ContainerHeapRule implements StaticRule {
     public List<Diagnostic> analyze(AnalysisContext context) {
         List<Diagnostic> findings = new ArrayList<>();
         for (Dockerfile dockerfile : context.dockerfiles()) {
+            if (isNonDeployment(dockerfile)) {
+                continue;
+            }
             int javaImageLine = javaImageLine(dockerfile.lines());
             if (javaImageLine < 0 || hasHeapBound(dockerfile.lines())) {
                 continue;
@@ -96,6 +99,13 @@ public final class Jvm001ContainerHeapRule implements StaticRule {
                     HELP_URL));
         }
         return List.copyOf(findings);
+    }
+
+    // Dev-tooling images (.devcontainer, Gitpod) are not deployment artifacts — their heap is
+    // never the production heap, so flagging them is noise.
+    private static boolean isNonDeployment(Dockerfile dockerfile) {
+        String path = dockerfile.path().toString().replace('\\', '/').toLowerCase(Locale.ROOT);
+        return path.contains("/.devcontainer/") || path.contains("/.gitpod") || path.contains("gitpod.dockerfile");
     }
 
     private static int javaImageLine(List<String> lines) {
