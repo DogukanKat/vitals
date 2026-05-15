@@ -67,4 +67,9 @@ public final class PropertiesConfigSource implements ConfigSource {
     public Optional<ConfigValue> get(String dotKey) {
         return Optional.ofNullable(values.get(dotKey));
     }
+
+    @Override
+    public java.util.Map<String, ConfigValue> entries() {
+        return values;
+    }
 }

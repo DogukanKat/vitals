@@ -134,6 +134,19 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("SEC-001").contains("wildcard '*'");
     }
 
+    @Test
+    void run_givenHardcodedSecrets_reportsCfg001(@TempDir Path tempDir) {
+        Path project = copyFixture("cfg-001", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .execute(project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8);
+
+        assertThat(exit).isEqualTo(1);
+        assertThat(output).contains("CFG-001").contains("spring.datasource.password");
+    }
+
     private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
             URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);

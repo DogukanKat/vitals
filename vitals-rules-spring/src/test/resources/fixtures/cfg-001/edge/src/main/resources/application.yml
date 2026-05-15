@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: orders-service
+  security:
+    user:
+      password: ${ADMIN_PASSWORD}
+
+app:
+  feature:
+    password-rotation-enabled: false
+  jwt:
+    secret: hardcoded-jwt-signing-key-do-not-ship
+
+server:
+  port: 8080

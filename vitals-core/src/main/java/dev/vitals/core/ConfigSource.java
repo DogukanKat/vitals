@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -25,6 +26,12 @@ public interface ConfigSource {
      * @return the value plus source line, or empty when the key is not set
      */
     Optional<ConfigValue> get(String dotKey);
+
+    /**
+     * All flattened entries in this source, keyed by dotted path. Order is unspecified; callers
+     * that need determinism should sort. The returned map is unmodifiable.
+     */
+    Map<String, ConfigValue> entries();
 
     /**
      * Multi-valued lookup that handles both Spring representations of a list:

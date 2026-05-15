@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: orders-service
+  datasource:
+    url: jdbc:postgresql://db:5432/orders
+    username: orders
+    password: ${DB_PASSWORD}
+
+app:
+  payment:
+    api-key: ${PAYMENT_API_KEY}
+
+server:
+  ssl:
+    key-store-password: ${KEYSTORE_PASSWORD}
+  port: 8080

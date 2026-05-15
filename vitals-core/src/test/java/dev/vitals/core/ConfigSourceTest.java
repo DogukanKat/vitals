@@ -29,6 +29,12 @@ class ConfigSourceTest {
         assertThat(inMemory(Map.of()).getList("a.b")).isEmpty();
     }
 
+    @Test
+    void entries_exposesAllKeys() {
+        Map<String, ConfigValue> values = Map.of("a.b", new ConfigValue("1", 1), "c.d", new ConfigValue("2", 2));
+        assertThat(inMemory(values).entries()).containsKeys("a.b", "c.d");
+    }
+
     private static ConfigSource inMemory(Map<String, ConfigValue> values) {
         return new ConfigSource() {
             @Override
@@ -39,6 +45,11 @@ class ConfigSourceTest {
             @Override
             public Optional<ConfigValue> get(String dotKey) {
                 return Optional.ofNullable(values.get(dotKey));
+            }
+
+            @Override
+            public Map<String, ConfigValue> entries() {
+                return Map.copyOf(values);
             }
         };
     }

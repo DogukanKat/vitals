@@ -8,6 +8,7 @@ import dev.vitals.core.StaticRule;
 import dev.vitals.rules.jpa.Jpa001EagerFetchRule;
 import dev.vitals.rules.jpa.Jpa002NPlusOneRule;
 import dev.vitals.rules.jpa.Jpa003OpenInViewRule;
+import dev.vitals.rules.spring.Cfg001HardcodedSecretRule;
 import dev.vitals.rules.spring.Di001FieldInjectionRule;
 import dev.vitals.rules.spring.Sec001ActuatorExposureRule;
 import dev.vitals.rules.spring.Tx001BlockingInTransactionRule;
@@ -73,7 +74,8 @@ public final class VitalsCli implements Callable<Integer> {
                 new Tx001BlockingInTransactionRule(),
                 new Tx002NonPublicTransactionalRule(),
                 new Di001FieldInjectionRule(),
-                new Sec001ActuatorExposureRule());
+                new Sec001ActuatorExposureRule(),
+                new Cfg001HardcodedSecretRule());
 
         List<Diagnostic> diagnostics = new ArrayList<>();
         for (StaticRule rule : rules) {
