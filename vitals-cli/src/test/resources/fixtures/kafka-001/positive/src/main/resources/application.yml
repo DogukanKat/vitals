@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: orders-consumer
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: orders
+      enable-auto-commit: true

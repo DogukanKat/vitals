@@ -12,7 +12,7 @@ Supports **Spring Boot 3.2+** on **Java 21+** only. Spring Boot 2.x is intention
 
 ## Status
 
-Pre-MVP. Tier 1 rules being implemented in order — see the table below.
+MVP: all 10 Tier 1 rules shipped end-to-end (rule + tests + CLI + docs). See the table below.
 
 ## Rule catalog (Tier 1)
 
@@ -27,7 +27,7 @@ Pre-MVP. Tier 1 rules being implemented in order — see the table below.
 | SEC-001   | `vitals-rules-spring` | shipped   | Actuator endpoints exposed without authentication                  |
 | CFG-001   | `vitals-rules-spring` | shipped   | Hardcoded secrets without `${...}` placeholder                     |
 | JVM-001   | `vitals-rules-jvm`    | shipped   | Container heap not configured                                      |
-| KAFKA-001 | `vitals-rules-kafka`  | planned   | `enable.auto.commit=true` with manual processing                   |
+| KAFKA-001 | `vitals-rules-kafka`  | shipped   | `enable.auto.commit=true` with manual processing                   |
 
 See [`docs/rules/`](docs/rules) for rule documentation.
 

@@ -160,6 +160,19 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("WARN").contains("JVM-001").contains("bound the heap");
     }
 
+    @Test
+    void run_givenKafkaAutoCommitWithListener_reportsKafka001(@TempDir Path tempDir) {
+        Path project = copyFixture("kafka-001", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .execute(project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8);
+
+        assertThat(exit).isEqualTo(1);
+        assertThat(output).contains("KAFKA-001").contains("enable-auto-commit=true");
+    }
+
     private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
             URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);

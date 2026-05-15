@@ -9,6 +9,7 @@ import dev.vitals.rules.jpa.Jpa001EagerFetchRule;
 import dev.vitals.rules.jpa.Jpa002NPlusOneRule;
 import dev.vitals.rules.jpa.Jpa003OpenInViewRule;
 import dev.vitals.rules.jvm.Jvm001ContainerHeapRule;
+import dev.vitals.rules.kafka.Kafka001AutoCommitRule;
 import dev.vitals.rules.spring.Cfg001HardcodedSecretRule;
 import dev.vitals.rules.spring.Di001FieldInjectionRule;
 import dev.vitals.rules.spring.Sec001ActuatorExposureRule;
@@ -77,7 +78,8 @@ public final class VitalsCli implements Callable<Integer> {
                 new Di001FieldInjectionRule(),
                 new Sec001ActuatorExposureRule(),
                 new Cfg001HardcodedSecretRule(),
-                new Jvm001ContainerHeapRule());
+                new Jvm001ContainerHeapRule(),
+                new Kafka001AutoCommitRule());
 
         List<Diagnostic> diagnostics = new ArrayList<>();
         for (StaticRule rule : rules) {

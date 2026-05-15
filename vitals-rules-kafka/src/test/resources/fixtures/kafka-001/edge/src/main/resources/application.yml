@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: orders-producer
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      enable-auto-commit: true
