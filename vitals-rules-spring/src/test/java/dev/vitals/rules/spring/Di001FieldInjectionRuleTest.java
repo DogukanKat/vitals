@@ -47,6 +47,12 @@ class Di001FieldInjectionRuleTest {
     }
 
     @Test
+    void analyze_givenAutowiredFieldInTestSource_reportsNothing(@TempDir Path tempDir) {
+        Path project = copyFixture("test-source", tempDir);
+        assertThat(rule.analyze(JavaParserAnalysisContext.discover(project))).isEmpty();
+    }
+
+    @Test
     void analyze_givenAutowiredOnConstructorAndField_reportsOnlyField(@TempDir Path tempDir) {
         Path project = copyFixture("edge", tempDir);
         List<Diagnostic> diagnostics = rule.analyze(JavaParserAnalysisContext.discover(project));

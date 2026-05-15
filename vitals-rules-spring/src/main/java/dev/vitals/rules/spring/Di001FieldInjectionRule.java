@@ -61,7 +61,7 @@ public final class Di001FieldInjectionRule implements StaticRule {
     public List<Diagnostic> analyze(AnalysisContext context) {
         List<Diagnostic> findings = new ArrayList<>();
         for (AnalysisContext.JavaSource source : context.javaSources()) {
-            if (!(source.compilationUnit() instanceof CompilationUnit unit)) {
+            if (isTestSource(source) || !(source.compilationUnit() instanceof CompilationUnit unit)) {
                 continue;
             }
             unit.findAll(FieldDeclaration.class).forEach(field -> inspect(source, field, findings));
@@ -85,6 +85,13 @@ public final class Di001FieldInjectionRule implements StaticRule {
                 "@Autowired on field '" + fieldName
                         + "' — declare it final and inject through the constructor instead.",
                 HELP_URL));
+    }
+
+    // Field injection in test classes (JUnit + Spring test support) is idiomatic and unactionable;
+    // the constructor-injection argument does not apply to test fixtures. Maven/Gradle place test
+    // code under src/test, which is the convention this project already targets.
+    private static boolean isTestSource(AnalysisContext.JavaSource source) {
+        return source.path().toString().replace('\\', '/').contains("/src/test/");
     }
 
     private static boolean hasAutowired(FieldDeclaration field) {
