@@ -11,6 +11,30 @@ allprojects {
     version = "0.1.0-SNAPSHOT"
 }
 
+// Fails fast on macOS/iCloud conflict copies ("Foo 2.java") before they reach a commit or CI.
+val verifyNoConflictCopies =
+    tasks.register("verifyNoConflictCopies") {
+        group = "verification"
+        description = "Fails if conflict-copy files (e.g. 'Foo 2.java') exist in the source tree."
+        doLast {
+            val pattern = Regex(""" \d+\.(java|kt|kts|yml|yaml|properties|md|xml)$""")
+            val skip = setOf("build", ".git", ".gradle", ".idea")
+            val offenders = projectDir
+                .walkTopDown()
+                .onEnter { it.name !in skip }
+                .filter { it.isFile && pattern.containsMatchIn(it.name) }
+                .map { it.relativeTo(projectDir).path }
+                .sorted()
+                .toList()
+            if (offenders.isNotEmpty()) {
+                throw GradleException(
+                    "Conflict-copy files detected (likely iCloud sync on ~/Desktop). Delete them:\n" +
+                        offenders.joinToString("\n") { "  - $it" },
+                )
+            }
+        }
+    }
+
 subprojects {
     apply(plugin = "java-library")
     apply(plugin = "checkstyle")
@@ -140,6 +164,7 @@ subprojects {
 
     tasks.named("check").configure {
         dependsOn(tasks.named("jacocoTestReport"))
+        dependsOn(verifyNoConflictCopies)
     }
 }
 
