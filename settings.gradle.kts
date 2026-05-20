@@ -17,6 +17,7 @@ dependencyResolutionManagement {
 include(
     "vitals-core",
     "vitals-static-engine",
+    "vitals-engine",
     "vitals-rules-jpa",
     "vitals-rules-spring",
     "vitals-rules-kafka",

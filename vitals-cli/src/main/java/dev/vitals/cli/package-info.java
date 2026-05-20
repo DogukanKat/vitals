@@ -1,4 +1,4 @@
-/** CLI entry point and console reporter for Vitals. */
+/** CLI entry point for Vitals. */
 @NullMarked
 package dev.vitals.cli;
 

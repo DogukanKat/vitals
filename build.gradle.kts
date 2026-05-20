@@ -139,6 +139,7 @@ subprojects {
     // 80% line coverage gate on core + rules modules.
     val coveredModules = setOf(
         "vitals-core",
+        "vitals-engine",
         "vitals-rules-jpa",
         "vitals-rules-spring",
         "vitals-rules-kafka",

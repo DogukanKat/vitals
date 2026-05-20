@@ -8,6 +8,7 @@ logback = "1.5.12"
 picocli = "4.7.6"
 junit = "5.11.4"
 assertj = "3.26.3"
+json-schema-validator = "1.5.9"
 
 # plugins
 spotless = "7.0.2"
@@ -30,6 +31,7 @@ junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+json-schema-validator = { module = "com.networknt:json-schema-validator", version.ref = "json-schema-validator" }
 
 # annotation processors
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorprone-core" }

@@ -173,6 +173,25 @@ class VitalsCliIntegrationTest {
         assertThat(output).contains("KAFKA-001").contains("enable-auto-commit=true");
     }
 
+    @Test
+    void run_givenJsonFormat_emitsJsonAndWritesReportFile(@TempDir Path tempDir) throws IOException {
+        Path project = copyFixture("jpa-001", "positive", tempDir);
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+        int exit = new CommandLine(new VitalsCli(new PrintStream(stdout, true, StandardCharsets.UTF_8), System.err))
+                .setCaseInsensitiveEnumValuesAllowed(true)
+                .execute("--format", "json", project.toString());
+        String output = stdout.toString(StandardCharsets.UTF_8).trim();
+
+        assertThat(exit).isEqualTo(1);
+        assertThat(output).startsWith("{").endsWith("}");
+        assertThat(output).doesNotContain("Vitals 0.1.0");
+        assertThat(output).contains("\"schemaVersion\":\"1.0\"");
+        assertThat(output).contains("\"ruleId\":\"JPA-001\"");
+        assertThat(Files.readString(project.resolve("build/reports/vitals/report.json"), StandardCharsets.UTF_8))
+                .contains("\"schemaVersion\"");
+    }
+
     private static Path copyFixture(String rule, String name, Path tempDir) {
         try {
             URL root = VitalsCliIntegrationTest.class.getResource("/fixtures/" + rule + "/" + name);

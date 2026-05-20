@@ -4,13 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":vitals-core"))
-    implementation(project(":vitals-static-engine"))
-    implementation(project(":vitals-rules-jpa"))
-    implementation(project(":vitals-rules-spring"))
-    implementation(project(":vitals-rules-kafka"))
-    implementation(project(":vitals-rules-redis"))
-    implementation(project(":vitals-rules-jvm"))
+    implementation(project(":vitals-engine"))
     implementation(rootProject.libs.picocli)
     runtimeOnly(rootProject.libs.logback.classic)
 }
